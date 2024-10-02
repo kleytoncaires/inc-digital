@@ -1,0 +1,31 @@
+// ==================================================
+// fancyBox
+//
+// Licensed GPLv3 for open source use
+// or fancyBox Commercial License for commercial use
+//
+// http://fancyapps.com/fancybox/
+// Copyright 2019 fancyApps
+//
+// ==================================================
+@import '../../node_modules/@fancyapps/ui/dist/fancybox/fancybox';
+
+// ==================================================
+//  * Swiper 10.1.0
+//  * Most modern mobile touch slider and framework with hardware accelerated transitions
+//  * https://swiperjs.com
+//  * Copyright 2014-2022 Vladimir Kharlampidi
+//  * Released under the MIT License
+//  * Released on: February 10, 2022
+// ==================================================
+@import '../../node_modules/swiper/swiper-bundle';
+
+/**
+ * *******************************************************
+ * AOS (Animate on scroll) - wowjs alternative
+ * made to animate elements on scroll in both directions
+ * *******************************************************
+ */
+@import '../../node_modules/aos/src/sass/core';
+@import '../../node_modules/aos/src/sass/easing';
+@import '../../node_modules/aos/src/sass/animations';

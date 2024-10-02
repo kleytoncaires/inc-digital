@@ -1,0 +1,24 @@
+<div id="sticky-menu-top" style="height: 1px;"></div>
+<header class="header-menu" id="header-bar">
+	<nav class="">
+		<div class="container">
+			<a class="navbar-brand" href="<?php echo site_url(); ?>">
+				<img src="<?php echo get_template_directory_uri(); ?>/assets/img/logo.svg" alt="<?php echo get_bloginfo('name'); ?>">
+			</a>
+
+			<div class="collapse navbar-collapse" id="navbarHeader">
+				<?php
+				wp_nav_menu(array(
+					'theme_location'        => 'header-nav',
+					'depth' 				=> 1,
+					'container'             => 'nav',
+					'container_class'       => 'ms-auto',
+					'menu_class'            => 'navbar-nav',
+					'list_item_class'       => 'nav-item',
+					'link_class'            => 'nav-link',
+				));
+				?>
+			</div>
+		</div>
+	</nav>
+</header>
