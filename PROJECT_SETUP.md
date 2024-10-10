@@ -13,7 +13,7 @@ This guide outlines the necessary steps to set up and configure the WordPress en
 
 ```sh
 # Install the theme
-wp theme install https://github.com/kleytoncaires/inc-theme/archive/main.zip
+wp theme install https://github.com/kleytoncaires/inc-digital/archive/main.zip
 
 # Rename the theme folder (replace 'theme-name' with the desired name)
 mv wp-content/themes/wp-theme wp-content/themes/theme-name
