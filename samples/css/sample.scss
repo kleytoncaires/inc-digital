@@ -1,0 +1,8 @@
+@include generate-color-classes($color-red, 'red');
+
+.seletor {
+    @include vertical-center; // O container pai precisa ter uma altura estabelecida
+    @include font-size(32);
+    @include gradient(#ff7e5f, #feb47b, 'vertical');
+    @include input-placeholder('#00ff00');
+}

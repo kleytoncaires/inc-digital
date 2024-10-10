@@ -1,5 +1,5 @@
 <?php
-// Gerar um ID único para o Swiper
+// Generate a unique ID for the Swiper
 $swiper_id = 'swiper-' . uniqid();
 ?>
 
@@ -14,12 +14,12 @@ $swiper_id = 'swiper-' . uniqid();
             <?php endwhile; ?>
         </div>
 
-        <!-- Botões de navegação -->
+        <!-- Navigation buttons -->
         <div class="swiper-button-next"></div>
         <div class="swiper-button-prev"></div>
     </div>
 
-    <!-- Inicialização do Swiper com responsividade -->
+    <!-- Initialize Swiper with responsiveness -->
     <script>
         var swiper = new Swiper('#<?php echo $swiper_id; ?>', {
             navigation: {
