@@ -35,7 +35,7 @@ Run step `#1`, and `#2` quickly in one go — Run inside local WP install's them
 
 ```sh
 # 1— Install dependencies in your WordPress theme.
-npm i @fancyapps/ui jquery jquery-mask-plugin swiper aos --save
+npm i jquery jquery-mask-plugin @fancyapps/ui swiper aos modern-normalize --save
 # 2— Start your npm build workflow.
 npm start
 ```

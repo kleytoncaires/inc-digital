@@ -16,24 +16,14 @@ This guide outlines the necessary steps to set up and configure the WordPress en
 wp theme install https://github.com/kleytoncaires/inc-digital/archive/main.zip
 
 # Rename the theme folder (replace 'theme-name' with the desired name)
-mv wp-content/themes/wp-theme wp-content/themes/theme-name
+mv wp-content/themes/inc-digital wp-content/themes/{theme}
 
 # Activate the theme (replace 'theme-name' with the desired name)
-wp theme activate theme-name
+wp theme activate {theme}
 
 # Remove unnecessary files and themes
 wp theme delete twentytwentytwo twentytwentythree twentytwentyfour
 rm -rf wp-config-sample.php readme.html license.txt
-```
-
-## Plugin Installation
-
-```sh
-# Install and activate plugins
-wp plugin install contact-form-7 contact-form-cfdb7 wordpress-seo wp-mail-smtp wp-migrate-db --activate
-
-# Install and activate ACF PRO
-wp plugin install "https://connect.advancedcustomfields.com/v2/plugins/download?p=pro&k=b3JkZXJfaWQ9Nzg5MDd8dHlwZT1kZXZlbG9wZXJ8ZGF0ZT0yMDE2LTA0LTA1IDEzOjQwOjQw&_gl=1*hn0494*_gcl_au*MTM5NTY4MTA5My4xNzI1MzY4NDc5*_ga*MTU2NTI3MzM4OS4xNzI1MzY4NDc3*_ga_QQ5FN8NX8W*MTcyODUwMTA5Ni42LjEuMTcyODUwMTg3Ni41OS4wLjE2MTU0ODQ1MjA" --activate
 ```
 
 ## Set up language and timezone
@@ -47,6 +37,16 @@ wp site switch-language pt_BR
 
 # Set timezone to 'America/Sao_Paulo'
 wp option update timezone_string 'America/Sao_Paulo'
+```
+
+## Plugin Installation
+
+```sh
+# Install and activate plugins
+wp plugin install contact-form-7 contact-form-cfdb7 wordpress-seo wp-mail-smtp wp-migrate-db --activate
+
+# Install and activate ACF PRO
+wp plugin install "https://connect.advancedcustomfields.com/v2/plugins/download?p=pro&k=b3JkZXJfaWQ9Nzg5MDd8dHlwZT1kZXZlbG9wZXJ8ZGF0ZT0yMDE2LTA0LTA1IDEzOjQwOjQw&_gl=1*hn0494*_gcl_au*MTM5NTY4MTA5My4xNzI1MzY4NDc5*_ga*MTU2NTI3MzM4OS4xNzI1MzY4NDc3*_ga_QQ5FN8NX8W*MTcyODUwMTA5Ni42LjEuMTcyODUwMTg3Ni41OS4wLjE2MTU0ODQ1MjA" --activate
 ```
 
 ## Create Homepage and Configure Front Page
@@ -81,7 +81,7 @@ code .
 yarn
 
 # Install project dependencies using Yarn:
-yarn add jquery jquery-mask-plugin @fancyapps/ui swiper aos --save
+yarn add jquery jquery-mask-plugin @fancyapps/ui swiper aos modern-normalize --save
 ```
 
 ## Task Execution

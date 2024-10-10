@@ -9,14 +9,10 @@ const path = require('path')
 const webp = require('gulp-webp')
 const tinypng = require('gulp-tinypng-compress')
 const uglify = require('gulp-uglify')
-const sass = require('gulp-sass')(require('sass'))
+const sass = require('gulp-dart-sass')
 const concat = require('gulp-concat')
 const autoprefixer = require('gulp-autoprefixer')
 const babel = require('gulp-babel')
-const wpPot = require('gulp-wp-pot')
-const sort = require('gulp-sort')
-const ftp = require('vinyl-ftp')
-const rename = require('gulp-rename')
 
 const srcPath = 'assets/js'
 const destPath = './'
@@ -84,32 +80,5 @@ function watchFiles() {
     gulp.watch('assets/js/*.js', js)
 }
 
-const conn = ftp.create({
-    host: process.env.FTP_HOST,
-    user: process.env.FTP_USER,
-    password: process.env.FTP_PASSWORD,
-    parallel: 10,
-    log: console.log,
-})
-
-function deploy() {
-    return gulp
-        .src([
-            '**',
-            '!node_modules/**',
-            '!**/.env',
-            '!**/.git',
-            '!**/.gitignore',
-            '!**/README.md',
-        ])
-        .pipe(
-            rename((path) => {
-                path.dirname = path.dirname.replace(/\\/g, '/')
-            })
-        )
-        .pipe(conn.dest(process.env.FTP_PATH))
-}
-
 exports.default = series(parallel(css, js), watchFiles)
 exports.build = parallel(css, js, optimizeImages, convertToWebP)
-exports.deploy = deploy

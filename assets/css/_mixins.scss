@@ -1,3 +1,5 @@
+@use 'sass:math';
+
 // Mixin to generate background and text color classes based on a color variable and name.
 // Takes two parameters: $color-variable (the color value) and $color-name (the name to be used in the class).
 @mixin generate-color-classes($color-variable, $color-name) {
@@ -46,6 +48,7 @@
 
 // Mixin to create a responsive aspect ratio for elements.
 // Takes one parameter: $ratio (the desired aspect ratio, e.g., 16/9).
+
 @mixin aspect-ratio($ratio) {
     position: relative; // Sets position relative for the parent element.
     width: 100%; // Sets the width to 100% of the parent container.
@@ -61,21 +64,20 @@
     }
 }
 
-// Example usage of the aspect-ratio mixin for various aspect ratios.
 .ratio-16x9 {
-    @include aspect-ratio(16 / 9); // 16:9 aspect ratio.
+    @include aspect-ratio(math.div(16, 9)); // 16:9 aspect ratio.
 }
 
 .ratio-1x1 {
-    @include aspect-ratio(1 / 1); // 1:1 aspect ratio.
+    @include aspect-ratio(math.div(1, 1)); // 1:1 aspect ratio.
 }
 
 .ratio-4x3 {
-    @include aspect-ratio(4 / 3); // 4:3 aspect ratio.
+    @include aspect-ratio(math.div(4, 3)); // 4:3 aspect ratio.
 }
 
 .ratio-21x9 {
-    @include aspect-ratio(21 / 9); // 21:9 aspect ratio.
+    @include aspect-ratio(math.div(21, 9)); // 21:9 aspect ratio.
 }
 
 // Placeholders
