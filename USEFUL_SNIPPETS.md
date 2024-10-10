@@ -1,27 +1,23 @@
-# Useful WordPress Functions
+# Useful WordPress Snippets
 
 This is a list of useful WordPress functions that I often reference to enhance or clean up my sites. Please be careful and make backups.
 
 -   [Post Thumbnail With Lazy Loading](#post-thumbnail-with-lazy-loading)
 -   [Gallery Display from ACF Field in PHP](#gallery-display-from-acf-field-in-php)
+-   [Embedded Video Display with Modal Option and Custom Thumbnail](#embedded-video-display-with-modal-option-and-custom-thumbnail)
+-   [Swiper Integration with WordPress Posts](#swiper-integration-with-wordpress-posts)
 -   [Repeater Field Display from ACF in PHP](#repeater-field-display-from-acf-in-php)
 -   [Post List and Pagination in PHP with WP_Query](#post-list-and-pagination-in-php-with-wp_query)
 -   [Display Specific Page Content in PHP with WP_Query](#display-specific-page-content-in-php-with-wp_query)
 -   [AJAX to Load More Posts in WordPress Without Reloading](#ajax-to-load-more-posts-in-wordpress-without-reloading)
--   [Phone and ZIP Code Masks with Autocomplete in jQuery](#phone-and-zip-code-masks-with-autocomplete-in-jquery)
+-   [AJAX Search Implementation for Posts](#ajax-search-implementation-for-posts)
 -   [Contact Form with Name, Phone, Email, and Message Fields](#contact-form-with-name-phone-email-and-message-fields)
--   [jQuery Code for Appending Labels to CPT UI Plugin Menu Items](#jquery-code-for-adding-labels-to-cpt-ui-plugin-menu-items)
--   [jQuery Code for Appending Labels to Taxonomy Fields in CPT UI Plugin](#jquery-code-for-adding-labels-to-taxonomy-fields-in-cpt-ui-plugin)
--   [Change More Excerpt](#change-more-excerpt)
 -   [Contact Form 7 Select Field for Brazilian States](#contact-form-7-select-field-for-brazilian-states)
+-   [Contact Form 7 Body Message](#contact-form-7-body-message)
 
 ## Post Thumbnail With Lazy Loading
 
 ```php
-/**
- * Post Thumbnail With Lazy Loading
- */
-
 <?php
 $image_args = array(
     'class' => 'img-fluid',
@@ -32,51 +28,115 @@ the_post_thumbnail('full', $image_args);
 ?>
 ```
 
-## Gallery Display from ACF Field in PHP
+## Embedded Video Display with Modal Option and Custom Thumbnail
 
-Make sure to remove the `<title>` tag from your header.
+```php
+<?php get_template_part('core/embed-video', null, [
+    'video_link' => $video_link, // Link to the video
+    'modal' => true, // Set to true for modal, false for direct display
+    'thumbnail_image' => $thumbnail_image // Custom thumbnail image, if available
+]); ?>
+```
+
+## Swiper Integration with WordPress Posts
 
 ```php
 <?php
-$images = get_field('galeria');
+// Generate a unique ID for the Swiper
+$swiper_id = 'swiper-' . uniqid();
+?>
 
-if( $images ): ?>
-    <ul>
-        <?php foreach( $images as $image ): ?>
-            <li>
-                <img src="<?php echo esc_url($image['url']); ?>" alt="<?php echo esc_attr($image['alt']); ?>" loading="lazy" />
-                <p><?php echo esc_html($image['caption']); ?></p>
-            </li>
-        <?php endforeach; ?>
-    </ul>
+<?php if (have_posts()) : ?>
+    <div class="swiper-container" id="<?php echo $swiper_id; ?>">
+        <div class="swiper-wrapper">
+            <?php while (have_posts()) : the_post(); ?>
+                <div class="swiper-slide">
+                    <h2><?php the_title(); ?></h2>
+                    <p><?php the_excerpt(); ?></p>
+                </div>
+            <?php endwhile; ?>
+        </div>
+
+        <!-- Navigation buttons -->
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+    </div>
+
+    <!-- Initialize Swiper with responsiveness -->
+    <script>
+        var swiper = new Swiper('#<?php echo $swiper_id; ?>', {
+            navigation: {
+                nextEl: '#<?php echo $swiper_id; ?> .swiper-button-next',
+                prevEl: '#<?php echo $swiper_id; ?> .swiper-button-prev',
+            },
+            pagination: {
+                el: '#<?php echo $swiper_id; ?> .swiper-pagination',
+                clickable: true,
+            },
+            loop: true,
+            slidesPerView: 1,
+            spaceBetween: 10,
+            breakpoints: {
+                768: {
+                    slidesPerView: 2,
+                    spaceBetween: 20
+                },
+                992: {
+                    slidesPerView: 3,
+                    spaceBetween: 30
+                },
+            }
+        });
+    </script>
 <?php endif; ?>
 ```
 
 ## Repeater Field Display from ACF in PHP
 
 ```php
-<?php
-$rows = get_field('repetidor');
+<?php $rows = get_field('repetidor'); ?>
 
-if( $rows ): ?>
+<?php if ($rows): ?>
     <ul>
-        <?php foreach( $rows as $row ):
+        <?php foreach ($rows as $row):
             $titulo = isset($row['titulo']) ? $row['titulo'] : '';
             $descricao = isset($row['descricao']) ? $row['descricao'] : '';
             $imagem = isset($row['imagem']) ? $row['imagem'] : '';
         ?>
             <li>
-                <?php if( $titulo ): ?>
+                <?php if ($titulo): ?>
                     <h3><?php echo esc_html($titulo); ?></h3>
                 <?php endif; ?>
 
-                <?php if( $descricao ): ?>
-                    <p><?php echo esc_html($descricao); ?></p>
+                <?php if ($descricao): ?>
+                    <div class="remove-last-margin"><?php echo $descricao; ?></div>
                 <?php endif; ?>
 
-                <?php if( $imagem ): ?>
+                <?php if ($imagem): ?>
                     <img src="<?php echo esc_url($imagem['url']); ?>" alt="<?php echo esc_attr($imagem['alt']); ?>" loading="lazy">
                 <?php endif; ?>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+<?php endif; ?>
+```
+
+## Gallery Display from ACF Field in PHP
+
+```php
+<?php
+$swiper_id = 'gallery-' . uniqid();
+$images = get_field('gallery');
+?>
+
+<?php if ($images): ?>
+    <ul>
+        <?php foreach ($images as $image): ?>
+            <li>
+                <a data-src="<?php echo esc_url($image['url']); ?>" data-fancybox="gallery-<?php echo $swiper_id; ?>">
+                    <img src="<?php echo esc_url($image['url']); ?>" alt="<?php echo esc_attr($image['alt']); ?>" loading="lazy" />
+                    <p><?php echo esc_html($image['caption']); ?></p>
+                </a>
             </li>
         <?php endforeach; ?>
     </ul>
@@ -160,102 +220,108 @@ $posts_query = new WP_Query($args);
 ## AJAX to load more posts in WordPress without reloading.
 
 ```php
-<div id="post-container">
-    <!-- Posts will be loaded here -->
-</div>
-<button id="load-more">Load More</button>
-
-<script>
-    jQuery(document).ready(function($) {
-        let page = 1;
-
-        function loadPosts() {
-            $.ajax({
-                url: ajaxurl, // AJAX URL
-                type: 'POST',
-                data: {
-                    action: 'load_more_posts',
-                    page: page,
-                },
-                beforeSend: function() {
-                    $('#load-more').text('Loading...'); // Change button text
-                },
-                success: function(response) {
-                    if (response) {
-                        $('#post-container').append(response); // Append loaded posts
-                        page++; // Increment the page
-                        $('#load-more').text('Load More'); // Restore button text
-                    } else {
-                        $('#load-more').hide(); // Hide button if no more posts
-                    }
-                }
-            });
-        }
-
-        $('#load-more').on('click', function() {
-            loadPosts(); // Load posts on button click
-        });
-    });
-</script>
-
 <?php
-// Place the following PHP code in your theme's functions.php file
-function load_more_posts() {
-    $paged = isset($_POST['page']) ? intval($_POST['page']) : 1;
-    $args = array(
-        'post_type' => 'post',
-        'paged' => $paged,
-        'posts_per_page' => 5, // Number of posts to load
-    );
+// Set the post type to be queried
+set_query_var('post_type', 'post');
 
-    $query = new WP_Query($args);
+// Set the number of posts to load per request
+set_query_var('posts_per_page', 4);
 
-    if ($query->have_posts()) {
-        while ($query->have_posts()) {
-            $query->the_post();
-            // Customize the post output here:
-            ?>
-            <div class="post-item">
-                <h2><?php the_title(); ?></h2>
-                <div><?php the_excerpt(); ?></div>
-            </div>
-            <?php
-        }
-    } else {
-        wp_send_json_error('No more posts'); // Send error if no posts found
-    }
-
-    wp_reset_postdata();
-    die();
-}
-
-add_action('wp_ajax_load_more_posts', 'load_more_posts'); // For logged-in users
-add_action('wp_ajax_nopriv_load_more_posts', 'load_more_posts'); // For non-logged-in users
+// Include the template for loading more posts via AJAX
+get_template_part('core/ajax-load-more');
 ?>
 
+// After this, create a file in the 'partials' folder named 'loop-{post_type}.php' (replace {post_type} with the actual post type name) and implement the loop to display the posts.
+// Example:
+
+<div class="">
+    <h2><?php the_title(); ?></h2>
+    <div><?php the_content(); ?></div>
+    <?php if (has_post_thumbnail()) {
+        $image_args = array('class' => 'img-fluid', 'loading' => 'lazy');
+        the_post_thumbnail('full', $image_args);
+    }
+    ?>
+</div>
+```
+
+## AJAX Search Implementation for Posts
+
+```php
+<?php
+get_template_part('core/ajax-search', null, [
+    'post_type' => 'post', // Set the post type to be queried
+    'posts_per_page' => 2  // Set the number of posts to load per request
+]);
+?>
 ```
 
 ## Contact form with name, phone, email, and message fields.
 
 ```php
 <div class="form-group">
-    <label class="form-label" for="nome">Nome</label>
-    [text* nome id:nome class:form-control placeholder "Nome"]
+    [text* nome id:form-nome class:form-control placeholder "Nome"]
+    <label class="form-label" for="form-nome">Nome</label>
 </div>
 
 <div class="form-group">
-    <label class="form-label" for="telefone">Telefone</label>
-    [tel* telefone id:telefone class:form-control class:form-tel placeholder "Telefone"]
+    [tel* telefone id:form-telefone class:form-control class:form-tel placeholder "Telefone"]
+    <label class="form-label" for="form-telefone">Telefone</label>
 </div>
 
 <div class="form-group">
-    <label class="form-label" for="email">E-mail</label>
-    [email* email id:email class:form-control placeholder "E-mail"]
+    [email* email id:form-email class:form-control placeholder "E-mail"]
+    <label class="form-label" for="form-email">E-mail</label>
 </div>
 
 <div class="form-group">
-    <label class="form-label" for="mensagem">Mensagem</label>
-    [textarea* mensagem id:mensagem class:form-control placeholder "Mensagem"]
+    [text cpf id:form-cpf class:form-control class:form-cpf placeholder "CPF"]
+    <label class="form-label" for="form-cpf">CPF</label>
+</div>
+
+<div class="form-group">
+    [text cnpj id:form-cnpj class:form-control class:form-cnpj placeholder "CNPJ"]
+    <label class="form-label" for="form-cnpj">CNPJ</label>
+</div>
+
+<div class="form-group">
+    [textarea* mensagem id:form-mensagem class:form-control placeholder "Mensagem"]
+    <label class="form-label" for="form-mensagem">Mensagem</label>
+</div>
+
+<div class="form-group">
+    [text cep id:form-cep class:form-control class:form-cep placeholder "CEP"]
+    <label class="form-label" for="form-cep">CEP</label>
+</div>
+
+<div class="form-group">
+    [text endereco id:form-endereco class:form-control placeholder "Endereço"]
+    <label class="form-label" for="form-endereco">Endereço</label>
+</div>
+
+<div class="form-group">
+    [text numero id:form-numero class:form-control placeholder "Número"]
+    <label class="form-label" for="form-numero">Número</label>
+</div>
+
+<div class="form-group">
+    [text complemento id:form-complemento class:form-control placeholder "Complemento"]
+    <label class="form-label" for="form-complemento">Complemento</label>
+</div>
+
+<div class="form-group">
+    [text bairro id:form-bairro class:form-control placeholder "Bairro"]
+    <label class="form-label" for="form-bairro">Bairro</label>
+</div>
+
+<div class="form-group">
+    [text cidade id:form-cidade class:form-control placeholder "Cidade"]
+    <label class="form-label" for="form-cidade">Cidade</label>
+</div>
+
+<div class="form-group">
+    [text estado id:form-estado class:form-control placeholder "Estado"]
+    <label class="form-label" for="form-estado">Estado</label>
 </div>
 
 <div class="form-group">
@@ -266,102 +332,33 @@ add_action('wp_ajax_nopriv_load_more_posts', 'load_more_posts'); // For non-logg
 ## Contact Form 7 Select Field for Brazilian States
 
 ```php
-[select Estado class:form-control first_as_label "Selecione o Estado" "Acre" "Alagoas" "Amazonas" "Amapá" "Bahia" "Ceará" "Distrito Federal" "Espírito Santo" "Goiás" "Maranhão" "Mato Grosso" "Mato Grosso do Sul" "Minas Gerais" "Pará" "Paraíba" "Paraná" "Pernambuco" "Piauí" "Rio de Janeiro" "Rio Grande do Norte" "Rondônia" "Rio Grande do Sul" "Roraima" "Santa Catarina" "Sergipe" "São Paulo" "Tocantins"]
+<div class="form-group">
+    [select estado id:form-select-estado class:form-select first_as_label "Selecione o Estado" "Acre" "Alagoas" "Amazonas" "Amapá" "Bahia" "Ceará" "Distrito Federal" "Espírito Santo" "Goiás" "Maranhão" "Mato Grosso" "Mato Grosso do Sul" "Minas Gerais" "Pará" "Paraíba" "Paraná" "Pernambuco" "Piauí" "Rio de Janeiro" "Rio Grande do Norte" "Rondônia" "Rio Grande do Sul" "Roraima" "Santa Catarina" "Sergipe" "São Paulo" "Tocantins"]
+    <label class="form-label" for="form-select-estado">Estado</label>
+</div>
+
+<div class="form-group">
+    [select cidade id:form-select-cidade class:form-select first_as_label "Selecione a Cidade"]
+    <label class="form-label" for="form-select-cidade">Cidade</label>
+</div>
 ```
 
-## jQuery Code for Appending Labels to CPT UI Plugin Menu Items
+## Contact Form 7 Body Message
 
-```javascript
-jQuery('#menu_name').val(jQuery('#menu_name').val() + 'X')
-jQuery('#all_items').val(jQuery('#all_items').val() + 'Todos os itens')
-jQuery('#add_new').val(jQuery('#add_new').val() + 'Adicionar novo')
-jQuery('#add_new_item').val(
-    jQuery('#add_new_item').val() + 'Adicionar novo item'
-)
-jQuery('#edit_item').val(jQuery('#edit_item').val() + 'Editar item')
-jQuery('#new_item').val(jQuery('#new_item').val() + 'Novo item')
-jQuery('#view_item').val(jQuery('#view_item').val() + 'Ver item')
-jQuery('#view_items').val(jQuery('#view_items').val() + 'Ver itens')
-jQuery('#search_items').val(jQuery('#search_items').val() + 'Procurar item')
-jQuery('#not_found').val(jQuery('#not_found').val() + 'Nenhum item encontrado')
-jQuery('#not_found_in_trash').val(
-    jQuery('#not_found_in_trash').val() + 'Nenhum item encontrado na lixeira'
-)
-jQuery('#parent').val(jQuery('#parent').val() + 'Item ascendente')
-jQuery('#featured_image').val(
-    jQuery('#featured_image').val() + 'Imagem destacada'
-)
-jQuery('#set_featured_image').val(
-    jQuery('#set_featured_image').val() + 'Definir imagem destacada'
-)
-jQuery('#remove_featured_image').val(
-    jQuery('#remove_featured_image').val() + 'Remover imagem destacada'
-)
-jQuery('#use_featured_image').val(
-    jQuery('#use_featured_image').val() + 'Usar imagem destacada'
-)
-jQuery('#archives').val(jQuery('#archives').val() + 'Arquivos')
-jQuery('#insert_into_item').val(
-    jQuery('#insert_into_item').val() + 'Insira neste item'
-)
-jQuery('#uploaded_to_this_item').val(
-    jQuery('#uploaded_to_this_item').val() + 'Enviado para este item'
-)
-jQuery('#filter_items_list').val(
-    jQuery('#filter_items_list').val() + 'Filtrar lista de itens'
-)
-jQuery('#items_list_navigation').val(
-    jQuery('#items_list_navigation').val() + 'Navegação na lista de itens'
-)
-jQuery('#items_list').val(jQuery('#items_list').val() + 'Lista de itens')
-jQuery('#attributes').val(jQuery('#attributes').val() + 'Atributos')
-jQuery('#name_admin_bar').val(jQuery('#name_admin_bar').val() + 'X')
-jQuery('#item_published').val(
-    jQuery('#item_published').val() + 'Item publicado'
-)
-jQuery('#item_published_privately').val(
-    jQuery('#item_published_privately').val() + 'Item publicado em particular'
-)
-jQuery('#item_reverted_to_draft').val(
-    jQuery('#item_reverted_to_draft').val() + 'Item revertido para rascunho'
-)
-jQuery('#item_scheduled').val(jQuery('#item_scheduled').val() + 'Item agendado')
-jQuery('#item_updated').val(jQuery('#item_updated').val() + 'Item atualizado')
-```
-
-## jQuery Code for Appending Labels to Taxonomy Fields in CPT UI Plugin
-
-```javascript
-jQuery('#menu_name').val(jQuery('#menu_name').val() + 'X')
-jQuery('#all_items').val(jQuery('#all_items').val() + 'Todos os itens')
-jQuery('#edit_item').val(jQuery('#edit_item').val() + 'Editar item')
-jQuery('#view_item').val(jQuery('#view_item').val() + 'Ver item')
-jQuery('#update_item').val(jQuery('#update_item').val() + 'Atualizar item')
-jQuery('#add_new_item').val(
-    jQuery('#add_new_item').val() + 'Adicionar novo item'
-)
-jQuery('#new_item_name').val(jQuery('#new_item_name').val() + 'Novo item')
-jQuery('#parent_item').val(jQuery('#parent_item').val() + 'Item ascendente')
-jQuery('#parent_item_colon').val(
-    jQuery('#parent_item_colon').val() + 'Item ascendente:'
-)
-jQuery('#search_items').val(jQuery('#search_items').val() + 'Pesquisar item')
-jQuery('#popular_items').val(jQuery('#popular_items').val() + 'Itens populares')
-jQuery('#separate_items_with_commas').val(
-    jQuery('#separate_items_with_commas').val() + 'Separar itens com vírgulas'
-)
-jQuery('#add_or_remove_items').val(
-    jQuery('#add_or_remove_items').val() + 'Adicionar ou excluir itens'
-)
-jQuery('#choose_from_most_used').val(
-    jQuery('#choose_from_most_used').val() + 'Escolher entre os mais usados'
-)
-jQuery('#not_found').val(jQuery('#not_found').val() + 'Nenhum item encontrado')
-jQuery('#no_terms').val(jQuery('#no_terms').val() + 'Nenhum item')
-jQuery('#items_list_navigation').val(
-    jQuery('#items_list_navigation').val() + 'Navegação da lista de itens'
-)
-jQuery('#items_list').val(jQuery('#items_list').val() + 'Lista de itens')
+```php
+Nome: [nome]
+Telefone: [telefone]
+E-mail: [email]
+CPF: [cpf]
+CNPJ: [cnpj]
+Mensagem: [mensagem]
+CEP: [cep]
+Endereço: [endereco]
+Número: [numero]
+Complemento: [complemento]
+Bairro: [bairro]
+Cidade: [cidade]
+Estado: [estado]
 ```
 
 ## License & Attribution
