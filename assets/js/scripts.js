@@ -35,21 +35,35 @@ $(function () {
     $('.form-cpf').mask('000.000.000-00')
     $('.form-cnpj').mask('00.000.000/0000-00')
 
-    // CEP autofill
-    $('#form-cep').on('focusout', function () {
-        $.ajax({
-            url: 'https://viacep.com.br/ws/' + $(this).val() + '/json/',
-            dataType: 'json',
-            success: function (resposta) {
-                $('#form-endereco').val(resposta.logradouro)
-                $('#form-complemento').val(resposta.complemento)
-                $('#form-bairro').val(resposta.bairro)
-                $('#form-cidade').val(resposta.localidade)
-                $('#form-uf').val(resposta.uf)
-                $('#form-numero').focus()
-            },
+    // Floating Labels in CF7
+    var formControls = document.querySelectorAll(
+        '.wpcf7 .form-control, .wpcf7 .form-select'
+    )
+
+    for (var i = 0; i < formControls.length; i++) {
+        var input = formControls[i]
+        var label = input.parentNode.parentNode.querySelector('label')
+
+        input.addEventListener('focus', function () {
+            this.parentNode.parentNode.classList.add('active')
         })
-    })
+
+        input.addEventListener('blur', function () {
+            var cval = this.value
+            if (cval.length < 1) {
+                this.parentNode.parentNode.classList.remove('active')
+            }
+        })
+
+        if (label) {
+            label.addEventListener('click', function () {
+                var input = this.parentNode.querySelector(
+                    '.form-control, .form-select'
+                )
+                input.focus()
+            })
+        }
+    }
 
     // Get container offset
     offsetWidth()
