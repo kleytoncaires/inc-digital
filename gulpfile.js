@@ -1,18 +1,18 @@
-const gulp = require('gulp')
-const { parallel, series } = require('gulp')
-require('dotenv').config()
-const plumber = require('gulp-plumber')
-const notify = require('gulp-notify')
-const fs = require('fs')
-const path = require('path')
+import dotenv from 'dotenv'
+import fs from 'fs'
+import gulp, { parallel, series } from 'gulp'
+import autoprefixer from 'gulp-autoprefixer'
+import babel from 'gulp-babel'
+import concat from 'gulp-concat'
+import sass from 'gulp-dart-sass'
+import notify from 'gulp-notify'
+import plumber from 'gulp-plumber'
+import tinypng from 'gulp-tinypng-compress'
+import uglify from 'gulp-uglify'
+import webp from 'gulp-webp'
+import path from 'path'
 
-const webp = require('gulp-webp')
-const tinypng = require('gulp-tinypng-compress')
-const uglify = require('gulp-uglify')
-const sass = require('gulp-dart-sass')
-const concat = require('gulp-concat')
-const autoprefixer = require('gulp-autoprefixer')
-const babel = require('gulp-babel')
+dotenv.config()
 
 const srcPath = 'assets/js'
 const destPath = './'
@@ -48,7 +48,7 @@ function css() {
         .pipe(sass({ outputStyle: 'compressed' }).on('error', sass.logError))
         .pipe(
             autoprefixer({
-                browserlist: ['last 2 versions'],
+                overrideBrowserslist: ['last 2 versions'],
                 cascade: false,
             })
         )
@@ -80,5 +80,5 @@ function watchFiles() {
     gulp.watch('assets/js/*.js', js)
 }
 
-exports.default = series(parallel(css, js), watchFiles)
-exports.build = parallel(css, js, optimizeImages, convertToWebP)
+export default series(parallel(css, js), watchFiles)
+export const build = parallel(css, js, optimizeImages, convertToWebP)
