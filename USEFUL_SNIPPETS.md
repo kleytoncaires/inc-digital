@@ -3,7 +3,6 @@
 This is a list of useful WordPress functions that I often reference to enhance or clean up my sites. Please be careful and make backups.
 
 -   [Post Thumbnail With Lazy Loading](#post-thumbnail-with-lazy-loading)
--   [Gallery Display from ACF Field in PHP](#gallery-display-from-acf-field-in-php)
 -   [Embedded Video Display with Modal Option and Custom Thumbnail](#embedded-video-display-with-modal-option-and-custom-thumbnail)
 -   [Swiper Integration with WordPress Posts](#swiper-integration-with-wordpress-posts)
 -   [Repeater Field Display from ACF in PHP](#repeater-field-display-from-acf-in-php)
@@ -51,8 +50,8 @@ $swiper_id = 'swiper-' . uniqid();
         <div class="swiper-wrapper">
             <?php while (have_posts()) : the_post(); ?>
                 <div class="swiper-slide">
-                    <h2><?php the_title(); ?></h2>
-                    <p><?php the_excerpt(); ?></p>
+                    <h2 class=""><?php the_title(); ?></h2>
+                    <p class=""><?php the_excerpt(); ?></p>
                 </div>
             <?php endwhile; ?>
         </div>
@@ -94,7 +93,7 @@ $swiper_id = 'swiper-' . uniqid();
 ## Repeater Field Display from ACF in PHP
 
 ```php
-<?php $rows = get_field('repetidor'); ?>
+<?php $rows = get_field('repeater'); ?>
 
 <?php if ($rows): ?>
     <ul>
@@ -105,7 +104,7 @@ $swiper_id = 'swiper-' . uniqid();
         ?>
             <li>
                 <?php if ($titulo): ?>
-                    <h3><?php echo esc_html($titulo); ?></h3>
+                    <h3 class=""><?php echo esc_html($titulo); ?></h3>
                 <?php endif; ?>
 
                 <?php if ($descricao): ?>
@@ -230,13 +229,16 @@ set_query_var('posts_per_page', 4);
 // Include the template for loading more posts via AJAX
 get_template_part('core/ajax-load-more');
 ?>
+```
 
-// After this, create a file in the 'partials' folder named 'loop-{post_type}.php' (replace {post_type} with the actual post type name) and implement the loop to display the posts.
-// Example:
+> [!NOTE]\
+> After this, create a file in the 'partials' folder named 'loop-{post_type}.php' (replace {post_type} with the actual post type name) and implement the loop to display the posts.
+> // Example:
 
+```php
 <div class="">
-    <h2><?php the_title(); ?></h2>
-    <div><?php the_content(); ?></div>
+    <h2 class=""><?php the_title(); ?></h2>
+    <div class=""><?php the_content(); ?></div>
     <?php if (has_post_thumbnail()) {
         $image_args = array('class' => 'img-fluid', 'loading' => 'lazy');
         the_post_thumbnail('full', $image_args);
@@ -258,14 +260,15 @@ get_template_part('core/ajax-search', null, [
 
 ## Contact form with name, phone, email, and message fields.
 
-```php
+```html
 <div class="form-group">
     [text* nome id:form-nome class:form-control placeholder "Nome"]
     <label class="form-label" for="form-nome">Nome</label>
 </div>
 
 <div class="form-group">
-    [tel* telefone id:form-telefone class:form-control class:form-tel placeholder "Telefone"]
+    [tel* telefone id:form-telefone class:form-control class:form-tel
+    placeholder "Telefone"]
     <label class="form-label" for="form-telefone">Telefone</label>
 </div>
 
@@ -280,12 +283,14 @@ get_template_part('core/ajax-search', null, [
 </div>
 
 <div class="form-group">
-    [text cnpj id:form-cnpj class:form-control class:form-cnpj placeholder "CNPJ"]
+    [text cnpj id:form-cnpj class:form-control class:form-cnpj placeholder
+    "CNPJ"]
     <label class="form-label" for="form-cnpj">CNPJ</label>
 </div>
 
 <div class="form-group">
-    [textarea* mensagem id:form-mensagem class:form-control placeholder "Mensagem"]
+    [textarea* mensagem id:form-mensagem class:form-control placeholder
+    "Mensagem"]
     <label class="form-label" for="form-mensagem">Mensagem</label>
 </div>
 
@@ -305,7 +310,8 @@ get_template_part('core/ajax-search', null, [
 </div>
 
 <div class="form-group">
-    [text complemento id:form-complemento class:form-control placeholder "Complemento"]
+    [text complemento id:form-complemento class:form-control placeholder
+    "Complemento"]
     <label class="form-label" for="form-complemento">Complemento</label>
 </div>
 
@@ -324,21 +330,25 @@ get_template_part('core/ajax-search', null, [
     <label class="form-label" for="form-estado">Estado</label>
 </div>
 
-<div class="form-group">
-    [submit class:btn "Enviar"]
-</div>
+<div class="form-group">[submit class:btn "Enviar"]</div>
 ```
 
 ## Contact Form 7 Select Field for Brazilian States
 
-```php
+```html
 <div class="form-group">
-    [select estado id:form-select-estado class:form-select first_as_label "Selecione o Estado" "Acre" "Alagoas" "Amazonas" "Amapá" "Bahia" "Ceará" "Distrito Federal" "Espírito Santo" "Goiás" "Maranhão" "Mato Grosso" "Mato Grosso do Sul" "Minas Gerais" "Pará" "Paraíba" "Paraná" "Pernambuco" "Piauí" "Rio de Janeiro" "Rio Grande do Norte" "Rondônia" "Rio Grande do Sul" "Roraima" "Santa Catarina" "Sergipe" "São Paulo" "Tocantins"]
+    [select estado id:form-select-estado class:form-select first_as_label
+    "Selecione o Estado" "Acre" "Alagoas" "Amazonas" "Amapá" "Bahia" "Ceará"
+    "Distrito Federal" "Espírito Santo" "Goiás" "Maranhão" "Mato Grosso" "Mato
+    Grosso do Sul" "Minas Gerais" "Pará" "Paraíba" "Paraná" "Pernambuco" "Piauí"
+    "Rio de Janeiro" "Rio Grande do Norte" "Rondônia" "Rio Grande do Sul"
+    "Roraima" "Santa Catarina" "Sergipe" "São Paulo" "Tocantins"]
     <label class="form-label" for="form-select-estado">Estado</label>
 </div>
 
 <div class="form-group">
-    [select cidade id:form-select-cidade class:form-select first_as_label "Selecione a Cidade"]
+    [select cidade id:form-select-cidade class:form-select first_as_label
+    "Selecione a Cidade"]
     <label class="form-label" for="form-select-cidade">Cidade</label>
 </div>
 ```
