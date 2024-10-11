@@ -3,7 +3,8 @@
 // -----------
 // DYNAMIC TAXONOMY REGISTRATION
 // -----------
-function dynamic_register_taxonomy($taxonomy, $post_types, $args = array())
+
+function dynamic_register_taxonomy($taxonomy, $post_types, $custom_args = array())
 {
     $labels = array(
         'name' => ucfirst($taxonomy) . 's', // Nome plural da taxonomia, capitalizado
@@ -28,9 +29,10 @@ function dynamic_register_taxonomy($taxonomy, $post_types, $args = array())
         'show_in_rest' => true, // Enables support for the WordPress block editor (Gutenberg)
     );
 
-    $args = wp_parse_args($args, $default_args);
+    // Mescla os argumentos padrão com os personalizados
+    $args = wp_parse_args($custom_args, $default_args);
 
-    register_taxonomy($taxonomy, (array)$post_types, $args);
+    register_taxonomy($taxonomy, (array) $post_types, $args);
 }
 
 // -----------

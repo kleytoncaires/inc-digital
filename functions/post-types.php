@@ -3,7 +3,7 @@
 // -----------
 // DYNAMIC CUSTOM POST TYPE REGISTRATION
 // -----------
-function dynamic_post_type($singular, $plural, $slug, $supports = array('title', 'editor', 'thumbnail', 'excerpt', 'comments'), $icon = 'dashicons-admin-post')
+function dynamic_post_type($singular, $plural, $slug, $supports = array('title', 'editor', 'thumbnail', 'excerpt', 'comments'), $icon = 'dashicons-admin-post', $custom_args = array())
 {
     $labels = array(
         'name' => __($plural), // Nome plural
@@ -21,7 +21,7 @@ function dynamic_post_type($singular, $plural, $slug, $supports = array('title',
         'not_found_in_trash' => __('Nenhum ' . strtolower($singular) . ' encontrado na lixeira.') // Nenhum [Nome Singular] encontrado na lixeira.
     );
 
-    $args = array(
+    $default_args = array(
         'labels' => $labels, // Custom labels defined earlier
         'public' => true, // Defines if the post type is public and can be displayed in the user interface
         'has_archive' => true, // Allows the creation of an archive for this post type
@@ -32,8 +32,12 @@ function dynamic_post_type($singular, $plural, $slug, $supports = array('title',
         'with_front' => false // Determines if the permalink base of the post type should be preceded by the front page permalink base
     );
 
+    // Merge default args with custom args
+    $args = array_merge($default_args, $custom_args);
+
     register_post_type($slug, $args);
 }
+
 
 // -----------
 // REGISTER POST TYPES
