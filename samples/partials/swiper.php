@@ -1,7 +1,4 @@
-<?php
-// Generate a unique ID for the Swiper
-$swiper_id = 'swiper-' . uniqid();
-?>
+<?php $swiper_id = 'swiper-' . uniqid(); ?>
 
 <?php if (have_posts()) : ?>
     <div class="swiper-container" id="<?php echo $swiper_id; ?>">
@@ -17,6 +14,9 @@ $swiper_id = 'swiper-' . uniqid();
         <!-- Navigation buttons -->
         <div class="swiper-button-next"></div>
         <div class="swiper-button-prev"></div>
+
+        <!-- Pagination -->
+        <div class="swiper-pagination"></div>
     </div>
 
     <!-- Initialize Swiper with responsiveness -->
