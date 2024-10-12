@@ -18,14 +18,15 @@ This is a list of useful WordPress functions that I often reference to enhance o
 ## Post Thumbnail With Lazy Loading
 
 ```php
-<?php
-$image_args = array(
-    'class' => 'img-fluid',
-    'loading' => 'lazy',
-);
-
-the_post_thumbnail('full', $image_args);
-?>
+<?php if (has_post_thumbnail()) : ?>
+    <?php
+    $image_args = array(
+        'class' => '',
+        'loading' => 'lazy',
+    );
+    the_post_thumbnail('full', $image_args);
+    ?>
+<?php endif; ?>
 ```
 
 ## Embedded Video Display with Modal Option and Custom Thumbnail
@@ -41,18 +42,15 @@ the_post_thumbnail('full', $image_args);
 ## Swiper Integration with WordPress Posts
 
 ```php
-<?php
-// Generate a unique ID for the Swiper
-$swiper_id = 'swiper-' . uniqid();
-?>
+<?php $swiper_id = 'swiper-' . uniqid(); ?>
 
 <?php if (have_posts()) : ?>
     <div class="swiper-container" id="<?php echo $swiper_id; ?>">
         <div class="swiper-wrapper">
             <?php while (have_posts()) : the_post(); ?>
                 <div class="swiper-slide">
-                    <h2 class=""><?php the_title(); ?></h2>
-                    <p class=""><?php the_excerpt(); ?></p>
+                    <h2><?php the_title(); ?></h2>
+                    <p><?php the_excerpt(); ?></p>
                 </div>
             <?php endwhile; ?>
         </div>
@@ -60,6 +58,9 @@ $swiper_id = 'swiper-' . uniqid();
         <!-- Navigation buttons -->
         <div class="swiper-button-next"></div>
         <div class="swiper-button-prev"></div>
+
+        <!-- Pagination -->
+        <div class="swiper-pagination"></div>
     </div>
 
     <!-- Initialize Swiper with responsiveness -->
@@ -105,15 +106,19 @@ $swiper_id = 'swiper-' . uniqid();
         ?>
             <li>
                 <?php if ($titulo): ?>
-                    <h3 class=""><?php echo esc_html($titulo); ?></h3>
+                    <h3 class="">
+                        <?php echo esc_html($titulo); ?>
+                    </h3>
                 <?php endif; ?>
 
                 <?php if ($descricao): ?>
-                    <div class="remove-last-margin"><?php echo $descricao; ?></div>
+                    <div class="remove-last-margin">
+                        <?php echo $descricao; ?>
+                    </div>
                 <?php endif; ?>
 
                 <?php if ($imagem): ?>
-                    <img src="<?php echo esc_url($imagem['url']); ?>" alt="<?php echo esc_attr($imagem['alt']); ?>" loading="lazy">
+                    <img src="<?php echo esc_url($imagem['url']); ?>" alt="<?php echo esc_attr($imagem['alt']); ?>" loading="lazy" class="">
                 <?php endif; ?>
             </li>
         <?php endforeach; ?>
@@ -125,15 +130,15 @@ $swiper_id = 'swiper-' . uniqid();
 
 ```php
 <?php
-$swiper_id = 'gallery-' . uniqid();
-$images = get_field('gallery');
+$gallery_id = 'gallery-' . uniqid();
+$images = get_field('gallery', 'option');
 ?>
 
 <?php if ($images): ?>
     <ul>
         <?php foreach ($images as $image): ?>
             <li>
-                <a data-src="<?php echo esc_url($image['url']); ?>" data-fancybox="gallery-<?php echo $swiper_id; ?>">
+                <a data-src="<?php echo esc_url($image['url']); ?>" data-fancybox="gallery-<?php echo $gallery_id; ?>" data-caption="<?php echo esc_attr($image['alt']); ?>">
                     <img src="<?php echo esc_url($image['url']); ?>" alt="<?php echo esc_attr($image['alt']); ?>" loading="lazy" />
                     <p><?php echo esc_html($image['caption']); ?></p>
                 </a>
@@ -162,18 +167,29 @@ $posts_query = new WP_Query($args);
 
 <?php if ($posts_query->have_posts()) : ?>
     <?php while ($posts_query->have_posts()) : $posts_query->the_post(); ?>
-        <h2 class=""><?php the_title(); ?></h2>
-        <div class="remove-last-margin"><?php the_content(); ?></div>
-        <?php if (has_post_thumbnail()) : ?>
-            <?php
-            $image_args = array(
-                'class' => 'img-fluid',
-                'loading' => 'lazy',
-            );
+        <div class="">
+            <?php if (get_the_title()) : ?>
+                <h2 class="">
+                    <?php the_title(); ?>
+                </h2>
+            <?php endif; ?>
 
-            the_post_thumbnail('full', $image_args);
-            ?>
-        <?php endif; ?>
+            <?php if (get_the_content()) : ?>
+                <div class="remove-last-margin">
+                    <?php the_content(); ?>
+                </div>
+            <?php endif; ?>
+
+            <?php if (has_post_thumbnail()) : ?>
+                <?php
+                $image_args = array(
+                    'class' => '',
+                    'loading' => 'lazy',
+                );
+                the_post_thumbnail('full', $image_args);
+                ?>
+            <?php endif; ?>
+        </div>
     <?php endwhile; ?>
 
     <?php
@@ -199,18 +215,29 @@ $posts_query = new WP_Query($args);
 
 <?php if ($posts_query->have_posts()) : ?>
     <?php while ($posts_query->have_posts()) : $posts_query->the_post(); ?>
-        <h2 class=""><?php the_title(); ?></h2>
-        <div class="remove-last-margin"><?php the_content(); ?></div>
-        <?php if (has_post_thumbnail()) : ?>
-            <?php
-            $image_args = array(
-                'class' => 'img-fluid',
-                'loading' => 'lazy',
-            );
+        <div class="">
+            <?php if (get_the_title()) : ?>
+                <h2 class="">
+                    <?php the_title(); ?>
+                </h2>
+            <?php endif; ?>
 
-            the_post_thumbnail('full', $image_args);
-            ?>
-        <?php endif; ?>
+            <?php if (get_the_content()) : ?>
+                <div class="remove-last-margin">
+                    <?php the_content(); ?>
+                </div>
+            <?php endif; ?>
+
+            <?php if (has_post_thumbnail()) : ?>
+                <?php
+                $image_args = array(
+                    'class' => '',
+                    'loading' => 'lazy',
+                );
+                the_post_thumbnail('full', $image_args);
+                ?>
+            <?php endif; ?>
+        </div>
     <?php endwhile; ?>
 <?php endif; ?>
 
@@ -238,13 +265,27 @@ get_template_part('core/ajax-load-more');
 
 ```php
 <div class="">
-    <h2 class=""><?php the_title(); ?></h2>
-    <div class=""><?php the_content(); ?></div>
-    <?php if (has_post_thumbnail()) {
-        $image_args = array('class' => 'img-fluid', 'loading' => 'lazy');
+    <?php if (get_the_title()) : ?>
+        <h2 class="">
+            <?php the_title(); ?>
+        </h2>
+    <?php endif; ?>
+
+    <?php if (get_the_content()) : ?>
+        <div class="remove-last-margin">
+            <?php the_content(); ?>
+        </div>
+    <?php endif; ?>
+
+    <?php if (has_post_thumbnail()) : ?>
+        <?php
+        $image_args = array(
+            'class' => '',
+            'loading' => 'lazy',
+        );
         the_post_thumbnail('full', $image_args);
-    }
-    ?>
+        ?>
+    <?php endif; ?>
 </div>
 ```
 
