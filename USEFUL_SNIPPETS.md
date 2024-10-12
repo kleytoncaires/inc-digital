@@ -13,6 +13,7 @@ This is a list of useful WordPress functions that I often reference to enhance o
 -   [Contact Form with Name, Phone, Email, and Message Fields](#contact-form-with-name-phone-email-and-message-fields)
 -   [Contact Form 7 Select Field for Brazilian States](#contact-form-7-select-field-for-brazilian-states)
 -   [Contact Form 7 Body Message](#contact-form-7-body-message)
+-   [Generate dynamic WhatsApp link with sanitized number](#generate-dynamic-whatsapp-link-with-sanitized-number)
 
 ## Post Thumbnail With Lazy Loading
 
@@ -369,6 +370,21 @@ Complemento: [complemento]
 Bairro: [bairro]
 Cidade: [cidade]
 Estado: [estado]
+```
+
+## Generate dynamic WhatsApp link with sanitized number
+
+```php
+<?php
+$whatsapp = get_field('whatsapp', 'option');
+$linkWhatsapp = preg_replace('/\D/', '', $whatsapp);
+?>
+
+<?php if ($whatsapp) : ?>
+    <a href="https://wa.me/+55<?php echo $linkWhatsapp ?>" class="" target="_blank">
+        <?php echo $whatsapp; ?>
+    </a>
+<?php endif; ?>
 ```
 
 ## License & Attribution
