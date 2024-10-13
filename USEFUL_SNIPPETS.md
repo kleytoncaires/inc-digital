@@ -14,6 +14,8 @@ This is a list of useful WordPress functions that I often reference to enhance o
 -   [Contact Form 7 Select Field for Brazilian States](#contact-form-7-select-field-for-brazilian-states)
 -   [Contact Form 7 Body Message](#contact-form-7-body-message)
 -   [Generate dynamic WhatsApp link with sanitized number](#generate-dynamic-whatsapp-link-with-sanitized-number)
+-   [Dynamic Image Gallery with Fancybox Integration and Unique Gallery ID](#dynamic-image-gallery-with-fancybox-integration-and-unique-gallery-id)
+-   [Dynamic Repeater Field Rendering with Optional Title, Description, and Image](#dynamic-repeater-field-rendering-with-optional-title-description-and-image)
 
 ## Post Thumbnail With Lazy Loading
 
@@ -425,6 +427,62 @@ $linkWhatsapp = preg_replace('/\D/', '', $whatsapp);
     <a href="https://wa.me/+55<?php echo $linkWhatsapp ?>" class="" target="_blank">
         <?php echo $whatsapp; ?>
     </a>
+<?php endif; ?>
+```
+
+## Dynamic Image Gallery with Fancybox Integration and Unique Gallery ID
+
+```php
+<?php
+$gallery_id = 'gallery-' . uniqid();
+$images = get_field('gallery', 'option');
+?>
+
+<?php if ($images): ?>
+    <ul>
+        <?php foreach ($images as $image): ?>
+            <li>
+                <a data-src="<?php echo esc_url($image['url']); ?>" data-fancybox="gallery-<?php echo $gallery_id; ?>" data-caption="<?php echo esc_attr($image['alt']); ?>">
+                    <img src="<?php echo esc_url($image['url']); ?>" alt="<?php echo esc_attr($image['alt']); ?>" loading="lazy" />
+                    <p><?php echo esc_html($image['caption']); ?></p>
+                </a>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+<?php endif; ?>
+```
+
+## Dynamic Repeater Field Rendering with Optional Title, Description, and Image
+
+```php
+<?php $rows = get_field('repeater'); ?>
+
+<?php if ($rows): ?>
+    <ul>
+        <?php foreach ($rows as $row):
+            $titulo = isset($row['titulo']) ? $row['titulo'] : '';
+            $descricao = isset($row['descricao']) ? $row['descricao'] : '';
+            $imagem = isset($row['imagem']) ? $row['imagem'] : '';
+        ?>
+            <li>
+                <?php if ($titulo): ?>
+                    <h3 class="">
+                        <?php echo esc_html($titulo); ?>
+                    </h3>
+                <?php endif; ?>
+
+                <?php if ($descricao): ?>
+                    <div class="remove-last-margin">
+                        <?php echo $descricao; ?>
+                    </div>
+                <?php endif; ?>
+
+                <?php if ($imagem): ?>
+                    <img src="<?php echo esc_url($imagem['url']); ?>" alt="<?php echo esc_attr($imagem['alt']); ?>" loading="lazy" class="">
+                <?php endif; ?>
+            </li>
+        <?php endforeach; ?>
+    </ul>
 <?php endif; ?>
 ```
 
