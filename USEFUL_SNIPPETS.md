@@ -6,6 +6,7 @@ This is a list of useful WordPress functions that I often reference to enhance o
 -   [Embedded Video Display with Modal Option and Custom Thumbnail](#embedded-video-display-with-modal-option-and-custom-thumbnail)
 -   [Swiper Integration with WordPress Posts](#swiper-integration-with-wordpress-posts)
 -   [Repeater Field Display from ACF in PHP](#repeater-field-display-from-acf-in-php)
+-   [Gallery Display from ACF Field in PHP](#gallery-display-from-acf-field-in-php)
 -   [Post List and Pagination in PHP with WP_Query](#post-list-and-pagination-in-php-with-wp_query)
 -   [Display Specific Page Content in PHP with WP_Query](#display-specific-page-content-in-php-with-wp_query)
 -   [AJAX to Load More Posts in WordPress Without Reloading](#ajax-to-load-more-posts-in-wordpress-without-reloading)
