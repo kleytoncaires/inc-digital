@@ -375,6 +375,14 @@ get_template_part('core/ajax-search', null, [
     <label class="form-label" for="form-estado">Estado</label>
 </div>
 
+<div class="form-group">
+    [checkbox checkbox use_label_element "Lorem" "Ipsum"]
+</div>
+
+<div class="form-group">
+    [radio radio use_label_element default:1 "Dolor" "Sit"]
+</div>
+
 <div class="form-group">[submit class:btn "Enviar"]</div>
 ```
 
