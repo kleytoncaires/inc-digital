@@ -1,21 +1,29 @@
 $(function () {
-    // Sticky header
-    var observer = new IntersectionObserver(
-        function (entries) {
-            // no intersection with screen
-            if (0 === entries[0].intersectionRatio) {
-                document.querySelector('#header-bar').classList.add('sticky')
-            }
+    var stickyMenu = document.querySelector('#sticky-menu-top')
 
-            // fully intersects with screen
-            else if (1 === entries[0].intersectionRatio) {
-                document.querySelector('#header-bar').classList.remove('sticky')
+    if (stickyMenu) {
+        var observer = new IntersectionObserver(
+            function (entries) {
+                // no intersection with screen
+                if (entries[0].intersectionRatio === 0) {
+                    document
+                        .querySelector('#header-bar')
+                        .classList.add('sticky')
+                }
+                // fully intersects with screen
+                else if (entries[0].intersectionRatio === 1) {
+                    document
+                        .querySelector('#header-bar')
+                        .classList.remove('sticky')
+                }
+            },
+            {
+                threshold: [0, 1],
             }
-        },
-        {
-            threshold: [0, 1],
-        }
-    )
+        )
+
+        observer.observe(stickyMenu)
+    }
 
     observer.observe(document.querySelector('#sticky-menu-top'))
 
