@@ -301,7 +301,7 @@ get_template_part('core/ajax-search', null, [
 ?>
 ```
 
-## Contact form with name, phone, email, and message fields.
+## Contact form with required fields for name, phone, email, and message, along with optional fields for CPF, CNPJ, full address, and preferences with checkbox and radio buttons.
 
 ```html
 <div class="form-group">
@@ -431,7 +431,7 @@ $linkWhatsapp = preg_replace('/\D/', '', $whatsapp);
 ?>
 
 <?php if ($whatsapp) : ?>
-    <a href="https://wa.me/+55<?php echo $linkWhatsapp ?>" class="" target="_blank">
+    <a href="https://wa.me/55<?php echo $linkWhatsapp ?>" class="" target="_blank">
         <?php echo $whatsapp; ?>
     </a>
 <?php endif; ?>
